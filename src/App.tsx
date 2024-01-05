@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import apiClient, { CanceledError, AxiosError } from "./services/api-client";
+import userService from "./services/user-service";
 
 interface User {
 	id: number;
@@ -13,32 +14,28 @@ function App() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		const controller = new AbortController();
 		setIsLoading(true);
 
-		const Response = async () => {
-			try {
-				const res = await apiClient.get("/users", {
-					signal: controller.signal,
-				});
+		const { request, cancel } = userService.getAllUsers();
+		request
+			.then((res) => {
 				setUsers(res.data);
 				setIsLoading(false);
-			} catch (err) {
+			})
+			.catch((err) => {
 				if (err instanceof CanceledError) return;
 				setError((err as AxiosError).message);
 				setIsLoading(false);
-			}
-		};
-		Response();
+			});
 
-		return () => controller.abort();
+		return () => cancel();
 	}, []);
 	// delete user using Optimistic method
 	const handleUser = (user: User) => {
 		const originalUser = [...users];
 		setUsers(users.filter((u) => u.id !== user.id));
 
-		apiClient.delete("/users/" + user.id).catch((err) => {
+		userService.deleteUser(user.id).catch((err) => {
 			setError((err as AxiosError).message);
 			setUsers(originalUser);
 		});
@@ -52,8 +49,8 @@ function App() {
 		const originalUser = [...users];
 		setUsers([newUser, ...users]);
 
-		apiClient
-			.post("/users", newUser)
+		userService
+			.addUser(newUser)
 			.then((response) => {
 				setUsers([response.data, ...users]);
 			})
