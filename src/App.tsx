@@ -50,7 +50,7 @@ function App() {
 		setUsers([newUser, ...users]);
 
 		userService
-			.addUser(newUser)
+			.createUser(newUser)
 			.then((response) => {
 				setUsers([response.data, ...users]);
 			})

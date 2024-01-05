@@ -15,7 +15,7 @@ class userService {
 	deleteUser(id: number) {
 		return apiClient.delete("/users/" + id);
 	}
-	addUser(user: User) {
+	createUser(user: User) {
 		return apiClient.post("/users", user);
 	}
 	updateUser(user: User) {
