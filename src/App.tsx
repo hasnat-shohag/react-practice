@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import useUsers from "./hooks/useUsers";
 import apiClient, { CanceledError, AxiosError } from "./services/api-client";
 import userService from "./services/user-service";
 
@@ -9,27 +9,7 @@ interface User {
 }
 
 function App() {
-	const [error, setError] = useState("");
-	const [users, setUsers] = useState<User[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
-
-	useEffect(() => {
-		setIsLoading(true);
-
-		const { request, cancel } = userService.getAll<User>();
-		request
-			.then((res) => {
-				setUsers(res.data);
-				setIsLoading(false);
-			})
-			.catch((err) => {
-				if (err instanceof CanceledError) return;
-				setError((err as AxiosError).message);
-				setIsLoading(false);
-			});
-
-		return () => cancel();
-	}, []);
+	const { users, error, isLoading, setUsers, setError } = useUsers();
 	// delete user using Optimistic method
 	const handleUser = (user: User) => {
 		const originalUser = [...users];
