@@ -1,6 +1,7 @@
 import "./App.css";
+import Table from "./components/Table";
 import useUsers from "./hooks/useUsers";
-import apiClient, { CanceledError, AxiosError } from "./services/api-client";
+import apiClient, { AxiosError } from "./services/api-client";
 import userService from "./services/user-service";
 
 interface User {
@@ -52,6 +53,7 @@ function App() {
 	};
 	return (
 		<>
+			<Table></Table>
 			{isLoading && (
 				<p className="text-center ml-10 text-green-600">Loading...</p>
 			)}
