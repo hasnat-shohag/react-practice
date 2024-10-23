@@ -1,33 +1,22 @@
-import React, { createContext } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { useReducer } from "react";
-import ComponentA from "./components/ComponentA";
-
-type Action = { type: "increment" } | { type: "decrement" } | { type: "reset" };
-const initialState = 0;
-const reducer = (state: number, action: Action): number => {
-	switch (action.type) {
-		case "increment":
-			return state + 1;
-		case "decrement":
-			return state - 1;
-		case "reset":
-			return initialState;
-		default:
-			return state;
-	}
-};
-
-interface CounterContextProps {
-	ContextState: number;
-	ContextDispatch: React.Dispatch<Action>;
-}
-
-export const CounterContext = createContext<CounterContextProps | undefined>(
-	undefined
-);
+import Counter from "./components/Counter";
+import Title from "./components/Title";
+import CounterOne from "./components/CounterOne";
+import Button from "./components/Button";
+import CounterTwo from "./components/CounterTwo";
 
 const App = () => {
-	const [count, dispatch] = useReducer(reducer, initialState);
+	const [count, setCount] = useState<number>(0);
+	const [countTwo, setCountTwo] = useState<number>(0);
+	const handleIncrement = useCallback(() => {
+		setCount(count + 1);
+	}, [count]);
+
+	const handleIncrement2 = useCallback(() => {
+		setCountTwo(countTwo + 1);
+	}, [countTwo]);
+
 	return (
 		<div
 			style={{
@@ -42,12 +31,15 @@ const App = () => {
 				boxSizing: "border-box",
 			}}
 		>
-			<CounterContext.Provider
-				value={{ ContextState: count, ContextDispatch: dispatch }}
-			>
-				<div>Count - {count}</div>
-				<ComponentA />
-			</CounterContext.Provider>
+			<Title />
+			<CounterOne count={count} />
+			<Button handleClick={handleIncrement} text="increment first">
+				Increment
+			</Button>
+			<CounterTwo count={countTwo} />
+			<Button handleClick={handleIncrement2} text="increment second">
+				Increment 2
+			</Button>
 		</div>
 	);
 };
