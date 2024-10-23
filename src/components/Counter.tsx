@@ -1,28 +1,29 @@
-import React, { useContext } from "react";
-import { CounterContext } from "../UserContext";
+import React, { useMemo, useState } from "react";
 
-const Counter: React.FC = () => {
-	const context = useContext(CounterContext);
+const Counter = () => {
+	const [countOne, setCountOne] = useState<number>(0);
+	const [countTwo, setCountTwo] = useState<number>(0);
 
-	if (!context) {
-		throw new Error("Counter must be used within a CounterProvider");
-	}
-
-	const [count, setCount] = context;
-
-	const increment = () => {
-		setCount(count + 1);
+	const handleIncrementOne = () => {
+		setCountOne(countOne + 1);
 	};
 
-	const decrement = () => {
-		setCount(count - 1);
+	const handleIncrementTwo = () => {
+		setCountTwo(countTwo + 1);
 	};
+
+	const isEven = useMemo(() => {
+		let i = 0;
+		while (i < 2000000000) i++;
+
+		return countOne % 2 === 0;
+	}, [countOne]);
 
 	return (
 		<div>
-			<p>Count: {count}</p>
-			<button onClick={increment}>Increment</button>
-			<button onClick={decrement}>Decrement</button>
+			<button onClick={handleIncrementOne}>Count One - {countOne}</button>{" "}
+			{isEven ? "Even" : "Odd"}
+			<button onClick={handleIncrementTwo}>Count Two - {countTwo}</button>
 		</div>
 	);
 };
