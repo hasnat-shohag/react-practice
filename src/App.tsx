@@ -1,9 +1,9 @@
-import DebouncingSearch from "./components/Search";
+import ThrottledScroll from "./components/Throttling";
 
 function App() {
 	return (
 		<>
-			<DebouncingSearch />
+			<ThrottledScroll />
 		</>
 	);
 }
