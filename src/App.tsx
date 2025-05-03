@@ -1,23 +1,13 @@
-import Counter from "./components/Counter";
+import React from "react";
+import ItemList from "./components/List";
+import NativeDelegation from "./components/List";
 
-const App = () => {
+function App() {
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "center",
-				alignItems: "center",
-				height: "100vh",
-				backgroundColor: "#f0f0f0",
-				padding: "20px",
-				fontSize: "24px",
-				boxSizing: "border-box",
-			}}
-		>
-			<Counter />
-		</div>
+		<>
+			<NativeDelegation />
+		</>
 	);
-};
+}
 
 export default App;
