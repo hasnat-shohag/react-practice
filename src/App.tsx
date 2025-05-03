@@ -1,11 +1,9 @@
-import React from "react";
-import ItemList from "./components/List";
-import NativeDelegation from "./components/List";
+import DebouncingSearch from "./components/Search";
 
 function App() {
 	return (
 		<>
-			<NativeDelegation />
+			<DebouncingSearch />
 		</>
 	);
 }
